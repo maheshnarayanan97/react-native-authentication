@@ -11,6 +11,7 @@ export default class Login extends React.Component {
           source={require("../images/image.jpg")}
           style={{ width: "100%", height: "43%" }}
         />
+
         <View
           style={{
             flexDirection: "row",
