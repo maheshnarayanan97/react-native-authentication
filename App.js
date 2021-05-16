@@ -1,29 +1,33 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import AppNavigator from "./src/navigations/Navigator";
 import * as Font from "expo-font";
 import { AppLoading } from "expo";
 import { isRequired } from "react-native/Libraries/DeprecatedPropTypes/DeprecatedColorPropType";
+import { Provider } from "react-redux";
+import store from "./store";
+const loadFont = () => {
+  return Font.loadAsync({
+    SemiBold: require("./src/fonts/Montserrat-SemiBold.otf"),
+    Medium: require("./src/fonts/Montserrat-Medium.otf"),
+    Regular: require("./src/fonts/Montserrat-Regular.otf"),
+  });
+};
 
-export default class App extends React.Component {
-  state = {
-    isFontLoaded: false,
-  };
+const App = () => {
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  async componentDidMount() {
-    await Font.loadAsync({
-      SemiBold: require("./src/fonts/Montserrat-SemiBold.otf"),
-      Medium: require("./src/fonts/Montserrat-Medium.otf"),
-      Regular: require("./src/fonts/Montserrat-Regular.otf"),
-    });
-    this.setState({ isFontLoaded: true });
-  }
+  return isLoaded === true ? (
+    <Provider store={store}>
+      <AppNavigator />{" "}
+    </Provider>
+  ) : (
+    <AppLoading startAsync={loadFont} onFinish={() => setIsLoaded(true)} />
+  );
+};
 
-  render() {
-    return this.state.isFontLoaded === true ? <AppNavigator /> : AppLoading;
-  }
-}
+export default App;
 
 const styles = StyleSheet.create({
   container: {

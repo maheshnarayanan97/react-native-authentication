@@ -1,17 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import { Text, View, Image, TextInput } from "react-native";
 import Icon from "@expo/vector-icons/AntDesign";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { login } from "../../action/auth";
 
-export default class Login extends React.Component {
-  render() {
-    const { navigate } = this.props.navigation;
-    return (
-      <View style={{ backgroundColor: "#FFF", height: "100%" }}>
-        <Image
-          source={require("../images/image.jpg")}
-          style={{ width: "100%", height: "43%" }}
-        />
+const Login = ({ navigation, login, isAuthenticated }) => {
+  const { navigate } = navigation;
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+  });
+  const { username, password } = formData;
 
+  const onChange = (e) =>
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  const onSubmit = (e) => {
+    e.preventDefault();
+    login(username, password);
+    console.log("hai");
+  };
+  if (isAuthenticated) return <Redirect to="/" />;
+
+  return (
+    <View style={{ backgroundColor: "#FFF", height: "100%" }}>
+      <Image
+        source={require("../images/image.jpg")}
+        style={{ width: "100%", height: "43%" }}
+      />
+      <form onSubmit={(e) => onSubmit(e)}>
         <View
           style={{
             flexDirection: "row",
@@ -26,7 +43,13 @@ export default class Login extends React.Component {
           }}
         >
           <Icon name="user" color="black" size={24} />
-          <TextInput placeholder="username" style={{ paddingHorizontal: 10 }} />
+          <TextInput
+            placeholder="username"
+            value={username}
+            onChange={(e) => onChange(e)}
+            style={{ paddingHorizontal: 10 }}
+            id="username"
+          />
         </View>
         <View
           style={{
@@ -43,9 +66,12 @@ export default class Login extends React.Component {
         >
           <Icon name="lock" color="black" size={24} />
           <TextInput
+            secureTextEntry
             placeholder="pssword"
             style={{ paddingHorizontal: 10 }}
-            type="password"
+            value={password}
+            onChange={(e) => onChange(e)}
+            id="password"
           />
         </View>
         <View
@@ -68,19 +94,27 @@ export default class Login extends React.Component {
             Sign In
           </Text>
         </View>
+      </form>
+      <Text
+        onPress={() => navigate("Register")}
+        style={{
+          alignSelf: "center",
+          color: "#00716F",
+          fontFamily: "SemiBold",
+          paddingVertical: 30,
+        }}
+      >
+        Dont Have an Account ? Register
+      </Text>
+    </View>
+  );
+};
 
-        <Text
-          onPress={() => navigate("Register")}
-          style={{
-            alignSelf: "center",
-            color: "#00716F",
-            fontFamily: "SemiBold",
-            paddingVertical: 30,
-          }}
-        >
-          Dont Have an Account ? Register
-        </Text>
-      </View>
-    );
-  }
-}
+Login.propTypes = {
+  login: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool,
+};
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+});
+export default connect(mapStateToProps, { login })(Login);
