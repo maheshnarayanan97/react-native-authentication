@@ -18,11 +18,7 @@ export const login = (email, password) => async (dispatch) => {
   const body = JSON.stringify({ email, password });
 
   try {
-    const res = await axios.post(
-      "https://devgroceryapi.spericorn.com/api/auth/login",
-      body,
-      config
-    );
+    const res = await axios.post("https://reqres.in/api/login", body, config);
 
     dispatch({
       type: LOGIN_SUCCESS,
@@ -58,7 +54,7 @@ export const signup =
 
     try {
       const res = await axios.post(
-        "https://devgroceryapi.spericorn.com/api/auth/register",
+        "https://reqres.in/api/register",
         body,
         config
       );

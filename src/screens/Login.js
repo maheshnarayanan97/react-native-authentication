@@ -15,12 +15,12 @@ const Login = ({ navigation, login, isAuthenticated }) => {
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.id]: e.target.value });
-  const onSubmit = (e) => {
+  const onPress = (e) => {
     e.preventDefault();
     login(username, password);
     console.log("hai");
   };
-  if (isAuthenticated) return <Redirect to="/" />;
+  if (isAuthenticated) return <Redirect to="/dashboard" />;
 
   return (
     <View style={{ backgroundColor: "#FFF", height: "100%" }}>
@@ -28,73 +28,74 @@ const Login = ({ navigation, login, isAuthenticated }) => {
         source={require("../images/image.jpg")}
         style={{ width: "100%", height: "43%" }}
       />
-      <form onSubmit={(e) => onSubmit(e)}>
-        <View
+
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          marginHorizontal: 55,
+          borderWidth: 2,
+          marginTop: 50,
+          paddingHorizontal: 10,
+          borderColor: "black",
+          borderRadius: 23,
+          paddingVertical: 2,
+        }}
+      >
+        <Icon name="user" color="black" size={24} />
+        <TextInput
+          placeholder="username"
+          value={username}
+          onChangeText={(value) => onChange(value)}
+          style={{ paddingHorizontal: 10 }}
+          id="username"
+        />
+      </View>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          marginHorizontal: 55,
+          borderWidth: 2,
+          marginTop: 15,
+          paddingHorizontal: 10,
+          borderColor: "black",
+          borderRadius: 23,
+          paddingVertical: 2,
+        }}
+      >
+        <Icon name="lock" color="black" size={24} />
+        <TextInput
+          secureTextEntry
+          placeholder="pssword"
+          style={{ paddingHorizontal: 10 }}
+          onChangeText={(value) => onChange(value)}
+          onChange={(e) => onChange(e)}
+          id="password"
+        />
+      </View>
+      <View
+        style={{
+          marginHorizontal: 55,
+          alignItems: "center",
+          justifyContent: "center",
+          marginTop: 30,
+          backgroundColor: "#00CC00",
+          paddingVertical: 10,
+          borderRadius: 23,
+        }}
+      >
+        <Text
           style={{
-            flexDirection: "row",
-            alignItems: "center",
-            marginHorizontal: 55,
-            borderWidth: 2,
-            marginTop: 50,
-            paddingHorizontal: 10,
-            borderColor: "black",
-            borderRadius: 23,
-            paddingVertical: 2,
+            color: "white",
+            fontFamily: "SemiBold",
           }}
+          onPress={(e) => onPress(e)}
         >
-          <Icon name="user" color="black" size={24} />
-          <TextInput
-            placeholder="username"
-            value={username}
-            onChange={(e) => onChange(e)}
-            style={{ paddingHorizontal: 10 }}
-            id="username"
-          />
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            marginHorizontal: 55,
-            borderWidth: 2,
-            marginTop: 15,
-            paddingHorizontal: 10,
-            borderColor: "black",
-            borderRadius: 23,
-            paddingVertical: 2,
-          }}
-        >
-          <Icon name="lock" color="black" size={24} />
-          <TextInput
-            secureTextEntry
-            placeholder="pssword"
-            style={{ paddingHorizontal: 10 }}
-            value={password}
-            onChange={(e) => onChange(e)}
-            id="password"
-          />
-        </View>
-        <View
-          style={{
-            marginHorizontal: 55,
-            alignItems: "center",
-            justifyContent: "center",
-            marginTop: 30,
-            backgroundColor: "#00CC00",
-            paddingVertical: 10,
-            borderRadius: 23,
-          }}
-        >
-          <Text
-            style={{
-              color: "white",
-              fontFamily: "SemiBold",
-            }}
-          >
-            Sign In
-          </Text>
-        </View>
-      </form>
+          Sign In
+        </Text>
+      </View>
+
       <Text
         onPress={() => navigate("Register")}
         style={{
